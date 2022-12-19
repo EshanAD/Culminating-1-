@@ -1,12 +1,7 @@
-import pygame, sys
-from pygame.locals import QUIT
+#Name: Eshan Adatia 
+#Date: December 20, 2022
+#Progam Name: BlackJack Game with GUI and Database
+#Description: BlackJack game that has a login in the window using a database to determine the funds in which the user can use/bet. The game is shown through GUI using buttons 
+#Program Purpose: Create a functional game that incorporates everything we learned in grade 11 comp sci
 
-pygame.init()
-DISPLAYSURF = pygame.display.set_mode((400, 300))
-pygame.display.set_caption('Hello World!')
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-    pygame.display.update()
+
