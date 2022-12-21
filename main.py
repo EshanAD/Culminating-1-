@@ -4,4 +4,8 @@
 #Description: BlackJack game that has a login in the window using a database to determine the funds in which the user can use/bet. The game is shown through GUI using buttons 
 #Program Purpose: Create a functional game that incorporates everything we learned in grade 11 comp sci
 
+import pygame
 
+#Creating screen 
+screen = pygame.display.set_mode((400,500))
+clock = pygame.time.Clock()
