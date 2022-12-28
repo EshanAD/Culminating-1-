@@ -13,12 +13,12 @@ pygame.init()
 SCREEN = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Menu")
 #Creates backround image from image file and transforms image to window size
-BG = pygame.image.load("images/Background.png")
+BG = pygame.image.load("imagesMenu/Background.png")
 SCREEN.blit(pygame.transform.scale(BG, (1280, 720)), (0,0))
 
 #Gets the specific font from images file and returns in specific size
 def font_size(size):  
-  return pygame.font.Font("images/font.ttf", size)
+  return pygame.font.Font("imagesMenu/font.ttf", size)
 
 #Rules for User displayed function
 def rules():
@@ -65,19 +65,19 @@ def loading_menu():
     MENU_TEXT = font_size(100).render("LOADING MENU", True, "#b68f40")
     MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
-    LOGIN_BUTTON = Button(image=pygame.image.load("images/LoginRect.png"),
+    LOGIN_BUTTON = Button(image=pygame.image.load("imagesMenu/LoginRect.png"),
                          pos=(640, 250),
                          text_input="LOGIN",
                          font=font_size(75),
                          base_color="#d7fcd4",
                          hovering_color="White")
-    RULES_BUTTON = Button(image=pygame.image.load("images/RulesRect.png"),
+    RULES_BUTTON = Button(image=pygame.image.load("imagesMenu/RulesRect.png"),
                             pos=(640, 400),
                             text_input="RULES",
                             font=font_size(75),
                             base_color="#d7fcd4",
                             hovering_color="White")
-    QUIT_BUTTON = Button(image=pygame.image.load("images/QuitRect.png"),
+    QUIT_BUTTON = Button(image=pygame.image.load("imagesMenu/QuitRect.png"),
                          pos=(640, 550),
                          text_input="QUIT",
                          font=font_size(75),
