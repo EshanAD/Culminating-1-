@@ -1,29 +1,35 @@
 import os
 import pygame
 import random
-def loadImage(name, card):
-    """Function that loads an card images based on their name. Raises an exception if card can't be loaded"""
+def imageLoad(imgName, cardNum):
+    """
+    This function loads an image file and returns it, along with its rectangle object.
+    If there is an issue loading the image, it will raise an exception.
+    """
 
-    if card == 1:
-        fullname = os.path.join("images/cards/", name)
-    else:
-        fullname = os.path.join('images', name)
+    imgDir = "images/cards/" if cardNum == 1 else "images"
+    fullPath = os.path.join(imgDir, imgName)
 
     try:
-        image = pygame.image.load(fullname)
-    except pygame.error as message:
-        print('Cannot load image:', name)
-        raise SystemExit(message)
-    image = image.convert()
+        img = pygame.image.load(fullPath)
+    except pygame.error as err:
+        print(f"Unable to load image: {imgName}")
+        raise SystemExit(err)
 
-    return image, image.get_rect()
+    img = img.convert()
+    return img, img.get_rect()
 
-def displayText(font, sentence):
-    """ Function displaying text located at the bottom of the screen"""
 
-    displayFont = pygame.font.Font.render(font, sentence, 1, (255, 255, 255),
-                                          (0, 0, 0))
-    return displayFont
+def display(font, sentence):
+    """
+    This function displays a message at the bottom of the screen, using the specified font.
+    The message will be white text on a black background.
+    """
+
+    textSurface = font.render(sentence, True, (255, 255, 255), (0, 0, 0))
+    return textSurface
+
+
 
 def shufflerDeck(deck):
         """ Shuffles the deck using the Fisher-Yates shuffling algorithm. In this code n is equal to the length of the deck - 1 since lists start at 0 not 1. When n > 0, a random number represented by k between 0 and n is created, and the card in the deck that is represented by the n just created is swapped with the card in the deck
