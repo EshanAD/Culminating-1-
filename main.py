@@ -7,6 +7,7 @@
 #Purpose of this code: Menu that connects rules, with login database and game
 import pygame, sys
 from ButtonforMenu import Button
+import Login as l
 
 #Initalizes screen and sets specific dimensions
 pygame.init()
@@ -96,7 +97,7 @@ def loading_menu():
         sys.exit()
       if event.type == pygame.MOUSEBUTTONDOWN:
         if LOGIN_BUTTON.checkForInput(MENU_MOUSE_POS):
-          LoginWindow()
+          l.main_login()
         if RULES_BUTTON.checkForInput(MENU_MOUSE_POS):
           rules()
         if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
