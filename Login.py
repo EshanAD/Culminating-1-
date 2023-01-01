@@ -5,6 +5,7 @@ from tkinter import messagebox
 from tkinter import simpledialog
 from sqlite3 import *
 from tkinter import END
+import BlackJack as bj
 # Creating main window
 
 def main_login():
@@ -45,6 +46,15 @@ def main_login():
   # Create a cursor object to execute SQL commands
   cursor = conn.cursor()
 
+  # Create the "users" table if it does not already exist
+  cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        username TEXT NOT NULL,
+        password TEXT NOT NULL
+    );
+  ''')
+
   # Define the Login_Account function
   def Login_Account():
       # Get the data from the form
@@ -69,8 +79,8 @@ def main_login():
         if results:
           # Data is present in the table
           messagebox.showinfo("","Cridentials in Database you are now logged in")
-          #Destroy This Database before running game
-          #BlackJack Game Function goes here
+          main_database.destroy()
+          bj.mainGame()
         else:
           # Data is not present in the table
           messagebox.showinfo("","Username or Password incorrect. Please try again or create a new account")
@@ -101,8 +111,8 @@ def main_login():
         if results:
           # Data is already present in the table
           messagebox.showerror("","Data is already present in the table, You will be logged in and redirected now")
-          #Destroy This Database before running game
-          #BlackJack Game Function goes here
+          main_database.destroy()
+          bj.mainGame()
         else:
           conn = sqlite3.connect("database.db")
           cursor = conn.cursor()
