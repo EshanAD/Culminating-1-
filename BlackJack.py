@@ -43,21 +43,86 @@ represented by the k just created. After this finishes n is decreased by 1 as th
 
         return deck
 
-def Deck():
-        """ A deck with a default of 52 cards is created and is returned"""
+def createDeck():
+        """ Creates a default deck which contains all 52 cards and returns it. """
+    
+        suits = ["s", "h", "c", "d"]
+        values = ["j", "q", "k", "a"]
+        values.extend(range(2, 11))
 
-        deck = [
-            'sj', 'sq', 'sk', 'sa', 'hj', 'hq', 'hk', 'ha', 'cj', 'cq', 'ck',
-            'ca', 'dj', 'dq', 'dk', 'da'
-        ]
-        deckvalues = range(2, 11)
-        for x in deckvalues:
-            spades = "s" + str(x)
-            hearts = "h" + str(x)
-            clubs = "c" + str(x)
-            diamonds = "d" + str(x)
-            deck.append(spades)
-            deck.append(hearts)
-            deck.append(clubs)
-            deck.append(diamonds)
+        deck = [f"{suit}{value}" for suit in suits for value in values]
         return deck
+
+def returnFromDead(deck, garbageDeck):
+      """ Appends the cards from the garbageDeck to the deck that is in play. This is called when the main deck has been emptied. """
+  
+      deck.extend(garbageDeck)
+      del garbageDeck[:]
+      random.shuffle(deck)
+  
+      return deck, garbageDeck
+  
+  
+      handOfDealer, handOfPlayer = [], []
+    
+def deckDeal(deck, garbageDeck, handOfDealer, handOfPlayer):
+      """ Shuffles the deck, takes the top 4 cards off the deck, appends them to the player's and dealer's hands, and returns the player's and dealer's hands. """
+  
+      deck = shuffle(deck)
+  
+      if len(deck) < 4:
+          deck, garbageDeck = returnFromDead(deck, garbageDeck)
+  
+      for i in range(4):
+          if i % 2 == 0:
+              handOfPlayer.append(deck.pop(0))
+          else:
+              handOfDealer.append(deck.pop(0))
+  
+      return deck, garbageDeck, handOfPlayer, handOfDealer
+  
+      
+          # Call the deckDeal function, passing the handOfDealer and handOfPlayer lists as arguments
+      deck, garbageDeck = deckDeal(deck, garbageDeck, handOfDealer, handOfPlayer)
+          
+def hit(deck, garbageDeck, hand):
+        """ Checks to see if the deck is gone, in which case it takes the cards from
+        the dead deck (cards that have been played and discarded)
+        and shuffles them in. Then if the player is hitting, it gives
+        a card to the player, or if the dealer is hitting, gives one to the dealer."""
+    
+        # if the deck is empty, shuffle in the dead deck
+        if len(deck) == 0:
+            deck, garbageDeck = returnFromDead(deck, garbageDeck)
+    
+        hand.append(deck.pop(0))
+    
+        return deck, garbageDeck, hand
+
+ def checkValue(hand):
+      """ Checks the value of the cards in the player's or dealer's hand. """
+  
+      totalValue = 0
+      num_aces = 0
+  
+      # check for natural blackjack (21 with just two cards)
+      if len(hand) == 2:
+          if hand[0][1:] == 'a' and hand[1][1:] in ('j', 'q', 'k'):
+              return 21
+          elif hand[1][1:] == 'a' and hand[0][1:] in ('j', 'q', 'k'):
+              return 21
+  
+      for card in hand:
+          value = card[1:]
+  
+          # Jacks, kings and queens are all worth 10, and aces are worth 11
+          if value == 'j' or value == 'q' or value == 'k':
+              value = 10
+          elif value == 'a':
+              value = 11
+              num_aces += 1
+          else:
+              value = int(value)
+  
+          totalValue += value
+#Finish function
