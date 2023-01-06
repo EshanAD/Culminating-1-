@@ -99,7 +99,7 @@ def hit(deck, garbageDeck, hand):
     
         return deck, garbageDeck, hand
 
- def checkValue(hand):
+def checkValue(hand):
       """ Checks the value of the cards in the player's or dealer's hand. """
   
       totalValue = 0
@@ -125,4 +125,106 @@ def hit(deck, garbageDeck, hand):
               value = int(value)
   
           totalValue += value
-#Finish function
+        # if hand value exceeds 21, reduce the value of each ace by 10 until the hand value is 21 or less
+      if totalValue > 21:
+          for card in hand:
+              if card[1:] == 'a':
+                  totalValue -= 10
+                  num_aces -= 1
+              if totalValue <= 21:
+                  break
+              elif num_aces == 0:
+                  break
+              else:
+                  continue
+      
+      return totalValue
+def blackJack(deck, garbageDeck, handOfPlayer, handOfDealer, funds, bet, cards,cardSprite):
+        """ Called when the player or the dealer is determined to have blackjack. Hands are compared to determine the outcome. """
+
+        textFont = pygame.font.Font(None, 28)
+
+        playerValue = checkValue(handOfPlayer)
+        dealerValue = checkValue(handOfDealer)
+
+        if playerValue == 21 and dealerValue == 21:
+            # The opposing player ties the original blackjack getter because he also has blackjack
+            # No money will be lost, and a new hand will be dealt
+            displayFont = display(
+                textFont,
+                "Blackjack! The dealer also has blackjack, so it's a push!")
+            deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd = endRound(
+                deck, handOfPlayer, handOfDealer, garbageDeck, funds, 0, bet, cards,
+                cardSprite)
+
+        elif playerValue == 21 and dealerValue != 21:
+            # Dealer loses
+            displayFont = display(textFont,
+                                  "Blackjack! You won $%.2f." % (bet * 1.5))
+            deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd = endRound(
+                deck, handOfPlayer, handOfDealer, garbageDeck, funds, bet, 0, cards,
+                cardSprite)
+
+        elif dealerValue == 21 and playerValue != 21:
+            # Player loses, money is lost, and new hand will be dealt
+            deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd = endRound(
+                deck, handOfPlayer, handOfDealer, garbageDeck, funds, 0, bet, cards,
+                cardSprite)
+            displayFont = display(
+                textFont, "Dealer has blackjack! You lose $%.2f." % (bet))
+
+        return displayFont, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd
+  
+def bust(deck, handOfPlayer, handOfDealer, garbageDeck, funds, moneyGained,moneyLost, cards, cardSprite):
+      """ This is only called when player busts by drawing too many cards. """
+  
+      font = pygame.font.Font(None, 28)
+      playerValue = checkValue(handOfPlayer)
+      if playerValue > 21:
+          displayFont = display(font, "You bust! You lost $%.2f." % (moneyLost))
+          deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd = endRound(
+              deck, handOfPlayer, handOfDealer, garbageDeck, funds, moneyGained,
+              moneyLost, cards, cardSprite)
+      else:
+          displayFont = None
+          roundEnd = False
+  
+      return deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd, displayFont
+
+#Check if I need this calculations (Will keep them for now just in case)
+def endRound(deck, handOfPlayer, handOfDealer, garbageDeck, funds, moneyGained, moneyLost, cards, cardSprite):
+      """Called at the end of a round to determine what happens to the cards, the money gained or lost,and such. It also shows the dealer's hand to the player, by deleting the old sprites and showing all the cards."""
+      if len(handOfPlayer) >= 2:
+        if "a" in handOfPlayer[0] or "a" in handOfPlayer[1]:
+          # If the player has blackjack, pay his bet back 3:2
+          moneyGained += (moneyGained / 2.0)
+      # Remove old dealer's cards and display the new ones
+      cards.empty()
+      dealer_card_pos = (75, 100)
+      for card in handOfDealer:
+          card_obj = cardSprite(card, dealer_card_pos)
+          dealer_card_pos = (dealer_card_pos[0] + 110, dealer_card_pos[1])
+          cards.add(card_obj)
+  
+      # Add the cards from the player's and dealer's hands to the discard pile
+      garbageDeck.extend(handOfPlayer)
+      garbageDeck.extend(handOfDealer)
+  
+      # Clear the player's and dealer's hands
+      handOfPlayer.clear()
+      handOfDealer.clear()
+  
+      # Update the player's funds
+      funds += moneyGained
+      funds -= moneyLost
+  
+      textFont = pygame.font.Font(None, 28)
+  
+      if funds <= 0:
+        if exitButton.rect.collidepoint(mX, mY) == 1:
+          m.main_menu()
+
+  
+      roundEnd = 1
+  
+      return deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd
