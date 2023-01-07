@@ -228,3 +228,57 @@ def endRound(deck, handOfPlayer, handOfDealer, garbageDeck, funds, moneyGained, 
       roundEnd = 1
   
       return deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd
+
+def handComparison(deck, garbageDeck, handOfPlayer, handOfDealer, funds, bet, cards,
+                     cardSprite):
+        """ Called at the end of a round (after the player stands), or at the beginning of a round
+        if the player or dealer has blackjack. This function compares the values of the respective hands of
+        the player and the dealer and determines who wins the round based on the rules of blacjack. """
+
+        textFont = pygame.font.Font(None, 28)
+        # How much money the player loses or gains, default at 0, changed depending on outcome
+        moneyGained = 0
+        moneyLost = 0
+
+        dealerValue = checkValue(handOfDealer)
+        playerValue = checkValue(handOfPlayer)
+
+        # Dealer hits until he has 17 or over
+        while 1:
+            if dealerValue < 17:
+                # dealer hits when he has less than 17, and stands if he has 17 or above
+                deck, garbageDeck, handOfDealer = hit(deck, garbageDeck, handOfDealer)
+                dealerValue = checkValue(handOfDealer)
+            else:
+                # dealer stands
+                break
+
+        if playerValue > dealerValue and playerValue <= 21:
+            # Player has beaten the dealer, and hasn't busted, therefore WINS
+            moneyGained = bet
+            deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd = endRound(
+                deck, handOfPlayer, handOfDealer, garbageDeck, funds, bet, 0, cards,
+                cardSprite)
+            displayFont = display(textFont, "You won $%.2f." % (bet))
+        elif playerValue == dealerValue and playerValue <= 21:
+            # Tie
+            deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd = endRound(
+                deck, handOfPlayer, handOfDealer, garbageDeck, funds, 0, 0, cards,
+                cardSprite)
+            displayFont = display(textFont, "It's a push!")
+        elif dealerValue > 21 and playerValue <= 21:
+            # Dealer has busted and player hasn't
+            deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd = endRound(
+                deck, handOfPlayer, handOfDealer, garbageDeck, funds, bet, 0, cards,
+                cardSprite)
+            displayFont = display(textFont,
+                                  "Dealer busts! You won $%.2f." % (bet))
+        else:
+            # Dealer wins in every other siutation taht i can think of
+            deck, handOfPlayer, handOfDealer, garbageDeck, funds, roundEnd = endRound(
+                deck, handOfPlayer, handOfDealer, garbageDeck, funds, 0, bet, cards,
+                cardSprite)
+            displayFont = display(textFont,
+                                  "Dealer wins! You lost $%.2f." % (bet))
+
+        return deck, garbageDeck, roundEnd, funds, displayFont
