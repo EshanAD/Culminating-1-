@@ -1,4 +1,4 @@
-class cardSprite(pygame.sprite.Sprite):
+    class cardSprite(pygame.sprite.Sprite):
         """ Sprite that displays a specific card. """
 
         def __init__(self, card, position):
@@ -142,8 +142,7 @@ class doubleButton(pygame.sprite.Sprite):
                     cards.empty()
                     playerCards.empty()
 
-                    deck, deadDeck, playerHand, dealerHand = deckDeal(
-                        deck, deadDeck)
+                    deck, deadDeck, playerHand, dealerHand = deckDeal(deck, deadDeck)
 
                     dCardPos = (50, 70)
                     pCardPos = (360, 340)
@@ -165,4 +164,57 @@ class doubleButton(pygame.sprite.Sprite):
                     click = 0
                     handsPlayed += 1
 
-            return deck, deadDeck, playerHand, dealerHand, dCardPos, pCardPos, roundEnd, displayFont, click, handsPlayed                     
+            return deck, deadDeck, playerHand, dealerHand, dCardPos, pCardPos, roundEnd, displayFont, click, handsPlayed  
+
+    class betButtonUp(pygame.sprite.Sprite):
+          """ Button that allows player to increase his bet (in between hands only). """
+      
+          def __init__(self):
+              pygame.sprite.Sprite.__init__(self)
+              self.image, self.rect = imageLoad("up.png", 0)
+              self.position = (1160, 255)
+      
+          def update(self, mX, mY, bet, funds, click, roundEnd):
+              if roundEnd == 1: self.image, self.rect = imageLoad("up.png", 0)
+              else: self.image, self.rect = imageLoad("up-grey.png", 0)
+      
+              self.position = (1160, 255)
+              self.rect.center = self.position
+      
+              if self.rect.collidepoint(mX, mY) == 1 and click == 1 and roundEnd == 1:
+      
+                  if bet < funds:
+                      bet += 5.0
+                      if bet % 5 != 0:
+                          while bet % 5 != 0:
+                              bet -= 1
+      
+                  click = 0
+      
+              return bet, click
+      
+    class betButtonDown(pygame.sprite.Sprite):
+      """ Button that allows player to decrease his bet (in between hands only). """
+      
+          def __init__(self):
+              pygame.sprite.Sprite.__init__(self)
+              self.image, self.rect = imageLoad("down.png", 0)
+              self.position = (900, 255)
+      
+          def update(self, mX, mY, bet, click, roundEnd):
+              if roundEnd == 1: self.image, self.rect = imageLoad("down.png", 0)
+              else: self.image, self.rect = imageLoad("down-grey.png", 0)
+      
+              self.position = (900, 255)
+              self.rect.center = self.position
+      
+              if self.rect.collidepoint(mX, mY) == 1 and click == 1 and roundEnd == 1:
+                  if bet > 5:
+                      bet -= 5.0
+                      if bet % 5 != 0:
+                          while bet % 5 != 0:
+                              bet += 1
+      
+                  click = 0
+      
+              return bet, click                
