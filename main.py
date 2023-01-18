@@ -1,9 +1,3 @@
-#Name: Eshan Adatia 
-#Date: January 20, 2022
-#Progam Name: BlackJack Game with GUI and Database
-#Description: BlackJack game that has a login in the window using a database to determine the funds in which the user can use/bet. The game is shown through GUI using buttons 
-#Program Purpose: Create a functional game that incorporates everything we learned in grade 11 comp sci
-
 import sqlite3
 from tkinter import *
 import tkinter as tk
@@ -13,6 +7,7 @@ from sqlite3 import *
 from tkinter import END
 import BlackJack as bj
 import Menu as m
+import database 
 
 # Creating main window
 def main_login():
@@ -55,13 +50,19 @@ def main_login():
  
   # Create the "users" table if it does not already exist
   cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY,
-        username TEXT NOT NULL,
-        password TEXT NOT NULL
-    );
-  ''')
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL,
+    funds REAL DEFAULT 100.0
+);
+''')
   # Define the Login_Account function
+  # login.py
+
+  global username 
+  global password
+
   def Login_Account():
     # Get the data from the form
     username = username_entry.get()
@@ -86,15 +87,17 @@ def main_login():
         # Data is present in the table
         messagebox.showinfo("","Cridentials in Database you are now logged in")
         main_database.destroy()
-        bj.mainGame()
+        # Get the user's funds from the database
+        funds = database.get_funds(username, password)
+        bj.mainGame(funds, username, password)
       else:
         # Data is not present in the table
         messagebox.showinfo("","Username or Password incorrect. Please try again or create a new account")
         # Clear the entry boxes
         username_entry.delete(0, END)
         password_entry.delete(0, END)
-  
-      password_entry.delete(0, END)
+
+
   
   # Define the Create_Account function
   def Create_Account():
@@ -120,7 +123,8 @@ def main_login():
         # Data is already present in the table
         messagebox.showerror("","Data is already present in the table, You will be logged in and redirected now")
         main_database.destroy()
-        bj.mainGame()
+        funds = database.get_funds(username, password)
+        bj.mainGame(funds, username, password)
       else:
         conn = sqlite3.connect("database.db")
         cursor = conn.cursor()

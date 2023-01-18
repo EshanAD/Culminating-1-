@@ -7,12 +7,56 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "beautifultable"
+version = "1.1.0"
+description = "Print text tables for terminals"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+wcwidth = "*"
+
+[package.extras]
+all = ["pandas"]
+dev = ["pandas"]
+
+[[package]]
+name = "consultor"
+version = "0.2.0"
+description = "Consultor te ayuda a explorar las diferentes carreras y cursos que las universidades ofrecen"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+beautifultable = "*"
+pymongo = "*"
+
+[[package]]
 name = "debugpy"
 version = "1.6.3"
 description = "An implementation of the Debug Adapter Protocol for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "dnspython"
+version = "2.3.0"
+description = "DNS toolkit"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.extras]
+doq = ["aioquic (>=0.9.20)"]
+dnssec = ["cryptography (>=2.6,<40.0)"]
+curio = ["curio (>=1.2,<2.0)", "sniffio (>=1.1,<2.0)"]
+doh = ["h2 (>=4.1.0)", "httpx (>=0.21.1)", "requests (>=2.23.0,<3.0.0)", "requests-toolbelt (>=0.9.1,<0.11.0)"]
+idna = ["idna (>=2.1,<4.0)"]
+trio = ["trio (>=0.14,<0.23)"]
+wmi = ["wmi (>=1.5.1,<2.0.0)"]
 
 [[package]]
 name = "docstring-to-markdown"
@@ -89,6 +133,25 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "pymongo"
+version = "4.3.3"
+description = "Python driver for MongoDB <http://www.mongodb.org>"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+dnspython = ">=1.16.0,<3.0.0"
+
+[package.extras]
+aws = ["pymongo-auth-aws (<2.0.0)"]
+encryption = ["pymongocrypt (>=1.3.0,<2.0.0)", "pymongo-auth-aws (<2.0.0)"]
+gssapi = ["pykerberos"]
+ocsp = ["pyopenssl (>=17.2.0)", "requests (<3.0.0)", "service-identity (>=18.1.0)", "certifi"]
+snappy = ["python-snappy"]
+zstd = ["zstandard"]
+
+[[package]]
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
@@ -115,7 +178,7 @@ test = ["pylint", "pycodestyle", "pyflakes", "pytest", "pytest-cov", "coverage"]
 
 [[package]]
 name = "python-lsp-server"
-version = "1.6.0"
+version = "1.7.1"
 description = "Python Language Server for the Language Server Protocol"
 category = "dev"
 optional = false
@@ -125,24 +188,24 @@ python-versions = ">=3.7"
 docstring-to-markdown = "*"
 jedi = ">=0.17.2,<0.19.0"
 pluggy = ">=1.0.0"
-pyflakes = {version = ">=2.5.0,<2.6.0", optional = true, markers = "extra == \"pyflakes\""}
+pyflakes = {version = ">=2.5.0,<3.1.0", optional = true, markers = "extra == \"pyflakes\""}
 python-lsp-jsonrpc = ">=1.0.0"
-rope = {version = ">0.10.5", optional = true, markers = "extra == \"rope\""}
+rope = {version = ">1.2.0", optional = true, markers = "extra == \"rope\""}
 ujson = ">=3.0.0"
 whatthepatch = {version = ">=1.0.2,<2.0.0", optional = true, markers = "extra == \"yapf\""}
 yapf = {version = "*", optional = true, markers = "extra == \"yapf\""}
 
 [package.extras]
-all = ["autopep8 (>=1.6.0,<1.7.0)", "flake8 (>=5.0.0,<5.1.0)", "mccabe (>=0.7.0,<0.8.0)", "pycodestyle (>=2.9.0,<2.10.0)", "pydocstyle (>=2.0.0)", "pyflakes (>=2.5.0,<2.6.0)", "pylint (>=2.5.0)", "rope (>=0.10.5)", "yapf", "whatthepatch"]
+all = ["autopep8 (>=1.6.0,<1.7.0)", "flake8 (>=5.0.0,<7)", "mccabe (>=0.7.0,<0.8.0)", "pycodestyle (>=2.9.0,<2.11.0)", "pydocstyle (>=6.2.0,<6.3.0)", "pyflakes (>=2.5.0,<3.1.0)", "pylint (>=2.5.0,<3)", "rope (>1.2.0)", "yapf", "whatthepatch (>=1.0.2,<2.0.0)"]
 autopep8 = ["autopep8 (>=1.6.0,<1.7.0)"]
-flake8 = ["flake8 (>=5.0.0,<5.1.0)"]
+flake8 = ["flake8 (>=5.0.0,<7)"]
 mccabe = ["mccabe (>=0.7.0,<0.8.0)"]
-pycodestyle = ["pycodestyle (>=2.9.0,<2.10.0)"]
-pydocstyle = ["pydocstyle (>=2.0.0)"]
-pyflakes = ["pyflakes (>=2.5.0,<2.6.0)"]
-pylint = ["pylint (>=2.5.0)"]
-rope = ["rope (>0.10.5)"]
-test = ["pylint (>=2.5.0)", "pytest", "pytest-cov", "coverage", "numpy", "pandas", "matplotlib", "pyqt5", "flaky"]
+pycodestyle = ["pycodestyle (>=2.9.0,<2.11.0)"]
+pydocstyle = ["pydocstyle (>=6.2.0,<6.3.0)"]
+pyflakes = ["pyflakes (>=2.5.0,<3.1.0)"]
+pylint = ["pylint (>=2.5.0,<3)"]
+rope = ["rope (>1.2.0)"]
+test = ["pylint (>=2.5.0,<3)", "pytest", "pytest-cov", "coverage", "numpy", "pandas", "matplotlib", "pyqt5", "flaky"]
 websockets = ["websockets (>=10.3)"]
 yapf = ["yapf", "whatthepatch (>=1.0.2,<2.0.0)"]
 
@@ -204,6 +267,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "wcwidth"
+version = "0.2.6"
+description = "Measures the displayed width of unicode strings in a terminal"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "whatthepatch"
 version = "1.0.2"
 description = "A patch parsing and application library."
@@ -222,11 +293,14 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<3.9"
-content-hash = "e1b32ab76b43113542f325e312966ffe3107ccd81a8789bd4106b0b352afc38d"
+content-hash = "da496972d92da040595ab1f70fddf27f0f719a115d054c2308bc3801e0adaa9d"
 
 [metadata.files]
 alien-invasion1 = []
+beautifultable = []
+consultor = []
 debugpy = []
+dnspython = []
 docstring-to-markdown = []
 jedi = []
 packaging = []
@@ -234,6 +308,7 @@ parso = []
 pluggy = []
 pyflakes = []
 pygame = []
+pymongo = []
 pyparsing = []
 python-lsp-jsonrpc = []
 python-lsp-server = []
@@ -242,5 +317,6 @@ rope = []
 toml = []
 tomli = []
 ujson = []
+wcwidth = []
 whatthepatch = []
 yapf = []
