@@ -1,3 +1,7 @@
+#Name: Eshan Adatia
+#Date: January 20 2023
+#Program name: BlackJack with database and GUI
+#Purpose: Creating a fun inovative game that incorporates a database component as well as GUI.
 import sqlite3
 from tkinter import *
 import tkinter as tk
