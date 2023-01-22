@@ -346,7 +346,7 @@ def mainGame(funds, username, password):
       def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = imageLoad("hit-grey.png", 0)
-        self.position = (1025, 380)
+        self.position = (1065, 380)
 
       def update(self, mX, mY, deck, deadDeck, playerHand, cards, pCardPos,roundEnd, cardSprite, click):
         """ If the button is clicked and the round is NOT over, Hits the player with a new card from the deck. It then creates a sprite
@@ -355,7 +355,7 @@ def mainGame(funds, username, password):
         if roundEnd == 0: self.image, self.rect = imageLoad("hit.png", 0)
         else: self.image, self.rect = imageLoad("hit-grey.png", 0)
 
-        self.position = (1025, 380)
+        self.position = (1065, 380)
         self.rect.center = self.position
 
         if self.rect.collidepoint(mX, mY) == 1 and click == 1:
@@ -435,7 +435,7 @@ def mainGame(funds, username, password):
     def __init__(self):
       pygame.sprite.Sprite.__init__(self)
       self.image, self.rect = imageLoad("stand-grey.png", 0)
-      self.position = (1025, 500)
+      self.position = (1065, 500)
 
     def update(self, mX, mY, deck, deadDeck, playerHand, dealerHand, cards,pCardPos, roundEnd, cardSprite, funds, bet, displayFont):
       """ If the button is clicked and the round is NOT over, let the player stand (take no more cards). """
@@ -443,7 +443,7 @@ def mainGame(funds, username, password):
       if roundEnd == 0: self.image, self.rect = imageLoad("stand.png", 0)
       else: self.image, self.rect = imageLoad("stand-grey.png", 0)
 
-      self.position = (1025, 500)
+      self.position = (1065, 500)
       self.rect.center = self.position
 
       if self.rect.collidepoint(mX, mY) == 1:
@@ -458,7 +458,7 @@ def mainGame(funds, username, password):
     def __init__(self):
       pygame.sprite.Sprite.__init__(self)
       self.image, self.rect = imageLoad("double-grey.png", 0)
-      self.position = (1025, 440)
+      self.position = (1065, 440)
 
     def update(self, mX, mY, deck, deadDeck, playerHand, dealerHand, playerCards, cards, pCardPos, roundEnd, cardSprite, funds, bet, displayFont):
       """ If the button is clicked and the round is NOT over, let the player stand (take no more cards). """
@@ -468,7 +468,7 @@ def mainGame(funds, username, password):
       else:
         self.image, self.rect = imageLoad("double-grey.png", 0)
 
-      self.position = (1025, 440)
+      self.position = (1065, 440)
       self.rect.center = self.position
 
       if self.rect.collidepoint(mX, mY) == 1:
@@ -493,7 +493,7 @@ def mainGame(funds, username, password):
     def __init__(self):
       pygame.sprite.Sprite.__init__(self)
       self.image, self.rect = imageLoad("deal.png", 0)
-      self.position = (1025, 600)
+      self.position = (1065, 600)
 
     def update(self, mX, mY, deck, deadDeck, roundEnd, cardSprite, cards, playerHand, dealerHand, dCardPos, pCardPos, displayFont, playerCards, click, handsPlayed):
       """ If the mouse position collides with the button, and the mouse is clicking, and roundEnd does not = 0,
@@ -508,7 +508,7 @@ def mainGame(funds, username, password):
       if roundEnd == 1 and funds > 0: self.image, self.rect = imageLoad("deal.png", 0)
       else: self.image, self.rect = imageLoad("deal-grey.png", 0)
 
-      self.position = (1025, 600)
+      self.position = (1065, 600)
       self.rect.center = self.position
 
       if self.rect.collidepoint(mX, mY) == 1 and funds > 0:
@@ -549,13 +549,13 @@ def mainGame(funds, username, password):
     def __init__(self):
       pygame.sprite.Sprite.__init__(self)
       self.image, self.rect = imageLoad("up.png", 0)
-      self.position = (1160, 255)
+      self.position = (1200, 230)
 
     def update(self, mX, mY, bet, funds, click, roundEnd):
       if roundEnd == 1: self.image, self.rect = imageLoad("up.png", 0)
       else: self.image, self.rect = imageLoad("up-grey.png", 0)
 
-      self.position = (1160, 255)
+      self.position = (1200, 230)
       self.rect.center = self.position
 
       if self.rect.collidepoint(mX, mY) == 1 and click == 1 and roundEnd == 1:
@@ -579,13 +579,13 @@ def mainGame(funds, username, password):
     def __init__(self):
       pygame.sprite.Sprite.__init__(self)
       self.image, self.rect = imageLoad("down.png", 0)
-      self.position = (900, 255)
+      self.position = (950, 230)
 
     def update(self, mX, mY, bet, click, roundEnd):
       if roundEnd == 1: self.image, self.rect = imageLoad("down.png", 0)
       else: self.image, self.rect = imageLoad("down-grey.png", 0)
 
-      self.position = (900, 255)
+      self.position = (950, 230)
       self.rect.center = self.position
 
       if self.rect.collidepoint(mX, mY) == 1 and click == 1 and roundEnd == 1:
@@ -668,15 +668,11 @@ def mainGame(funds, username, password):
 
     # Show the blurb at the bottom of the screen, how much money left, and current bet
     screen.blit(displayFont, (10, 444))
-    fundsFont = pygame.font.Font.render(textFont, "Funds: $%.2f" % (funds),
-                                        1, (255, 255, 255), (0, 0, 0))
-    screen.blit(fundsFont, (960, 325))
-    betFont = pygame.font.Font.render(textFont, "Bet: $%.2f" % (bet), 1,
-                                      (255, 255, 255), (0, 0, 0))
-    screen.blit(betFont, (975, 300))
-    hpFont = pygame.font.Font.render(textFont,
-                                     "Round: %i " % (handsPlayed), 1,
-                                     (255, 255, 255), (0, 0, 0))
+    fundsFont = pygame.font.Font.render(textFont, "Funds: $%.2f" % (funds), 1, (255, 255, 255), (0, 0, 0))
+    screen.blit(fundsFont, (1000, 325))
+    betFont = pygame.font.Font.render(textFont, "Bet: $%.2f" % (bet), 1,(255, 255, 255), (0, 0, 0))
+    screen.blit(betFont, (1015, 300))
+    hpFont = pygame.font.Font.render(textFont,"Round: %i " % (handsPlayed), 1, (255, 255, 255), (0, 0, 0))
     screen.blit(hpFont, (900, 20))
 
     for event in pygame.event.get():

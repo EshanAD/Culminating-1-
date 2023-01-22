@@ -74,8 +74,8 @@ def main_login():
       cursor = conn.cursor()
       # Check if the data is present in the table
       cursor.execute('''
-      SELECT * FROM users
-      WHERE username = ? AND password = ?
+        SELECT * FROM users
+        WHERE username = ? AND password = ?
       ''', (username, password))
   
       # Fetch the results of the query
@@ -90,13 +90,11 @@ def main_login():
         bj.mainGame(funds, username, password)
       else:
         # Data is not present in the table
-        messagebox.showinfo("","Username or Password incorrect. Please try again or create a new account")
+        messagebox.showerror("Error", "Username or Password incorrect. Please try again or create a new account")
         # Clear the entry boxes
         username_entry.delete(0, END)
         password_entry.delete(0, END)
 
-
-  
   # Define the Create_Account function
   def Create_Account():
     # Get the data from the form
@@ -110,16 +108,16 @@ def main_login():
     else:
       # Check if the data is already present in the table
       cursor.execute('''
-      SELECT * FROM users
-      WHERE username = ? AND password = ?
-    ''', (username, password))
+          SELECT * FROM users
+          WHERE username = ? AND password = ?
+      ''', (username, password))
   
       # Fetch the results of the query
       results = cursor.fetchone()
   
       if results:
         # Data is already present in the table
-        messagebox.showerror("","Data is already present in the table, You will be logged in and redirected now")
+        messagebox.showerror("Error","Data is already present in the table, You will be logged in and redirected now")
         main_database.destroy()
         funds = database.get_funds(username, password)
         bj.mainGame(funds, username, password)
@@ -128,9 +126,9 @@ def main_login():
         cursor = conn.cursor()
         # Insert the data into the table
         cursor.execute('''
-        INSERT INTO users (username, password)
-        VALUES (?, ?)
-      ''', (username, password))
+            INSERT INTO users (username, password)
+            VALUES (?, ?)
+          ''', (username, password))
   
           # Commit the transaction
         conn.commit()
@@ -182,7 +180,7 @@ def main_login():
       
     else:
         # Data is not present in the table
-        messagebox.showinfo("", "Username or Password not correct. Account  not deleted please try again")
+        messagebox.showerror("Error", "Username or Password not correct. Account  not deleted please try again")
   
       # Clear the entry boxes
         username_entry.delete(0, END)
