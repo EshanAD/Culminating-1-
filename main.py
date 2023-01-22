@@ -13,60 +13,54 @@ import BlackJack as bj
 import Menu as m
 import database 
 
-# Creating main window
+# Creating main window function
 def main_login():
-  #Creates the wh# Create the main window
+  # Creates the main window
   main_database = tk.Tk()
   main_database.title("BlackJack Login")
   main_database.geometry("1280x720")
-  
+
   # Load the image file
   image = tk.PhotoImage(file="login.png")
-  
+
   # Create a label with the image as the background
   label = tk.Label(main_database, image=image)
   label.pack()
-  
+
   # Add a label on top of the image
   window_name = tk.Label(main_database, text="BlackJack Login",bg = '#800080', font=('times new roman', 40, 'bold'))
   window_name.place(x=650, y=50)
 
+  # Create a frame with specific background color
   data_frame = Frame(main_database, bg='#800080')
   data_frame.place(x=725,y=360, width=335, height=100)
-  
+
   #Label and box for first name
   username_label = Label(data_frame, bg="#FFFACD", text="Username")
   username_label.grid(row=0, column=0, padx=15, pady=10)
   username_entry = Entry(data_frame)
   username_entry.grid(row=0, column=1, padx=10, pady=10)
-  
+
   #Label and box for last name
   password_label = Label(data_frame, bg="#FFFACD", text="Password")
   password_label.grid(row=1, column=0, padx=15, pady=10)
   password_entry = Entry(data_frame)
   password_entry.grid(row=1, column=1, padx=10, pady=10)
-  
-  
-  
+
+  # Connecting to the database
   conn = sqlite3.connect('database.db')
   # Create a cursor object to execute SQL commands
   cursor = conn.cursor()
- 
+
   # Create the "users" table if it does not already exist
   cursor.execute('''
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY,
-    username TEXT NOT NULL,
-    password TEXT NOT NULL,
-    funds REAL DEFAULT 100.0
-);
-''')
-  # Define the Login_Account function
-  # login.py
-
-  global username 
-  global password
-
+  CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY,
+      username TEXT NOT NULL,
+      password TEXT NOT NULL,
+      funds REAL DEFAULT 100.0
+  );
+  ''')
   def Login_Account():
     # Get the data from the form
     username = username_entry.get()

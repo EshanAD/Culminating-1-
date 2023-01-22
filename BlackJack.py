@@ -302,7 +302,7 @@ def mainGame(funds, username, password):
       playerValue = checkValue(playerHand)
       
       # Dealer hits until he has 17 or over
-      while 1:
+      while True:
           if dealerValue < 17:
               # dealer hits when he has less than 17, and stands if he has 17 or above
               deck, deadDeck, dealerHand = hit(deck, deadDeck, dealerHand)
@@ -431,8 +431,7 @@ def mainGame(funds, username, password):
         self.image, self.rect = imageLoad("exit-grey.png", 0)
         self.position = (1200, 25)
 
-      def update(self, mX, mY, deck, deadDeck, playerHand, dealerHand, cards,
-           pCardPos, roundEnd, cardSprite, funds, bet, displayFont):
+      def update(self, mX, mY, deck, deadDeck, playerHand, dealerHand, cards,pCardPos, roundEnd, cardSprite, funds, bet, displayFont):
             """ If the button is clicked and the round is over, update the database and exit the game. """
           
             if roundEnd == 0: 
@@ -471,7 +470,7 @@ def mainGame(funds, username, password):
           self.image, self.rect = imageLoad("stand-grey.png", 0)
           self.position = (1025, 500)
 
-      def update(self, mX, mY, deck, deadDeck, playerHand, dealerHand, cards, pCardPos, roundEnd, cardSprite, funds, bet, displayFont):
+      def update(self, mX, mY, deck, deadDeck, playerHand, dealerHand, cards,pCardPos, roundEnd, cardSprite, funds, bet, displayFont):
         """
         If the button is clicked and the round is NOT over, let the player stand (take no more cards). 
         """
@@ -576,7 +575,6 @@ def mainGame(funds, username, password):
                   faceDownCard = cardSprite("back", dCardPos)
                   dCardPos = (dCardPos[0] + 110, dCardPos[1])
                   cards.add(faceDownCard)
-
                   card = cardSprite(dealerHand[0], dCardPos)
                   cards.add(card)
                   roundEnd = 0
@@ -697,87 +695,86 @@ def mainGame(funds, username, password):
   ###### INITILIZATION ENDS ########
 
   ###### MAIN GAME LOOP BEGINS #######
-  while 1:
-      screen.blit(background, backgroundRect)
-      funds = float(funds)
-      if bet > funds:
-        # If you lost money, and your bet is greater than your funds, make the bet equal to the funds
-        bet = funds
+  while True:
+    screen.blit(background, backgroundRect)
+    funds = float(funds)
+    if bet > funds:
+      # If you lost money, and your bet is greater than your funds, make the bet equal to the funds
+      bet = funds
+      
+    if roundEnd == 1 and firstTime == 1:
+        # When the player hasn't started. Will only be displayed the first time.
+        displayFont = display(textFont,"Click on the arrows to declare your bet")
+        firstTime = 0
 
+    # Show the blurb at the bottom of the screen, how much money left, and current bet
+    screen.blit(displayFont, (10, 444))
+    fundsFont = pygame.font.Font.render(textFont, "Funds: $%.2f" % (funds), 1, (255, 255, 255), (0, 0, 0))
+    screen.blit(fundsFont, (960, 325))
+    betFont = pygame.font.Font.render(textFont, "Bet: $%.2f" % (bet), 1, (255, 255, 255), (0, 0, 0))
+    screen.blit(betFont, (975, 300))
+    hpFont = pygame.font.Font.render(textFont, "Round: %i " % (handsPlayed), 1,(255, 255, 255), (0, 0, 0))
+    screen.blit(hpFont, (900, 20))
 
-      if roundEnd == 1 and firstTime == 1:
-          # When the player hasn't started. Will only be displayed the first time.
-          displayFont = display(textFont,"Click on the arrows to declare your bet")
-          firstTime = 0
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            sys.exit()
+        elif event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mX, mY = pygame.mouse.get_pos()
+                click = 1
+        elif event.type == MOUSEBUTTONUP:
+            mX, mY = 0, 0
+            click = 0
 
-      # Show the blurb at the bottom of the screen, how much money left, and current bet
-      screen.blit(displayFont, (10, 444))
-      fundsFont = pygame.font.Font.render(textFont, "Funds: $%.2f" % (funds), 1, (255, 255, 255), (0, 0, 0))
-      screen.blit(fundsFont, (960, 325))
-      betFont = pygame.font.Font.render(textFont, "Bet: $%.2f" % (bet), 1, (255, 255, 255), (0, 0, 0))
-      screen.blit(betFont, (975, 300))
-      hpFont = pygame.font.Font.render(textFont, "Round: %i " % (handsPlayed), 1,(255, 255, 255), (0, 0, 0))
-      screen.blit(hpFont, (900, 20))
+    # Initial check for the value of the player's hand, so that his hand can be displayed and it can be determined
+    # if the player busts or has blackjack or not
+    if roundEnd == 0:
+        # Stuff to do when the game is happening
+        playerValue = checkValue(playerHand)
+        dealerValue = checkValue(dealerHand)
 
-      for event in pygame.event.get():
-          if event.type == QUIT:
-              sys.exit()
-          elif event.type == MOUSEBUTTONDOWN:
-              if event.button == 1:
-                  mX, mY = pygame.mouse.get_pos()
-                  click = 1
-          elif event.type == MOUSEBUTTONUP:
-              mX, mY = 0, 0
-              click = 0
-  
-      # Initial check for the value of the player's hand, so that his hand can be displayed and it can be determined
-      # if the player busts or has blackjack or not
-      if roundEnd == 0:
-          # Stuff to do when the game is happening
-          playerValue = checkValue(playerHand)
-          dealerValue = checkValue(dealerHand)
+        if playerValue == 21 and len(playerHand) == 2:
+            # If the player gets blackjack
+            displayFont, playerHand, dealerHand, deadDeck, funds, roundEnd = blackJack(deck, deadDeck, playerHand, dealerHand, funds, bet, cards,cardSprite)
 
-          if playerValue == 21 and len(playerHand) == 2:
-              # If the player gets blackjack
-              displayFont, playerHand, dealerHand, deadDeck, funds, roundEnd = blackJack(deck, deadDeck, playerHand, dealerHand, funds, bet, cards,cardSprite)
+        if dealerValue == 21 and len(dealerHand) == 2:
+            # If the dealer has blackjack
+            displayFont, playerHand, dealerHand, deadDeck, funds, roundEnd = blackJack(deck, deadDeck, playerHand, dealerHand, funds, bet, cards,cardSprite)
 
-          if dealerValue == 21 and len(dealerHand) == 2:
-              # If the dealer has blackjack
-              displayFont, playerHand, dealerHand, deadDeck, funds, roundEnd = blackJack(deck, deadDeck, playerHand, dealerHand, funds, bet, cards,cardSprite)
+        if playerValue > 21:
+            # If player busts
+            deck, playerHand, dealerHand, deadDeck, funds, roundEnd, displayFont = bust(deck, playerHand, dealerHand, deadDeck, funds, 0, bet, cards, cardSprite)
 
-          if playerValue > 21:
-              # If player busts
-              deck, playerHand, dealerHand, deadDeck, funds, roundEnd, displayFont = bust(deck, playerHand, dealerHand, deadDeck, funds, 0, bet, cards, cardSprite)
+    # Update the buttons
+    # deal
+    deck, deadDeck, playerHand, dealerHand, dCardPos, pCardPos, roundEnd, displayFont, click, handsPlayed = dealButton.update(mX, mY, deck, deadDeck, roundEnd, cardSprite, cards, playerHand,dealerHand, dCardPos, pCardPos, displayFont, playerCards, click, handsPlayed)
+    # hit
+    deck, deadDeck, playerHand, pCardPos, click = hitButton.update(mX, mY, deck, deadDeck, playerHand, playerCards, pCardPos, roundEnd, cardSprite, click)
+    # stand
+    deck, deadDeck, roundEnd, funds, playerHand, deadDeck, pCardPos, displayFont = standButton.update(mX, mY, deck, deadDeck, playerHand, dealerHand, cards, pCardPos,roundEnd, cardSprite, funds, bet, displayFont)
+    # exit
+    deck, garbageDeck, roundEnd, funds, handOfPlayer, garbageDeck, pCardPos, displayFont = exitButton.update(mX, mY, deck, deadDeck, playerHand, dealerHand, cards, pCardPos,roundEnd, cardSprite, funds, bet, displayFont)
+    # rebuy 
+    funds, click, bet = rebuyButton.update(mX, mY, roundEnd, funds, click, bet)
+    # double
+    deck, deadDeck, roundEnd, funds, playerHand, pCardPos, displayFont, bet = doubleButton.update( mX, mY, deck, deadDeck, playerHand, dealerHand, playerCards, cards, pCardPos, roundEnd, cardSprite, funds, bet, displayFont)
+    # Bet buttons
+    bet, click = bbU.update(mX, mY, bet, funds, click, roundEnd)
+    bet, click = bbD.update(mX, mY, bet, click, roundEnd)
+    # draw them to the screen
+    buttons.draw(screen)
 
-      # Update the buttons
-      # deal
-      deck, deadDeck, playerHand, dealerHand, dCardPos, pCardPos, roundEnd, displayFont, click, handsPlayed = dealButton.update(mX, mY, deck, deadDeck, roundEnd, cardSprite, cards, playerHand,dealerHand, dCardPos, pCardPos, displayFont, playerCards, click, handsPlayed)
-      # hit
-      deck, deadDeck, playerHand, pCardPos, click = hitButton.update(mX, mY, deck, deadDeck, playerHand, playerCards, pCardPos, roundEnd, cardSprite, click)
-      # stand
-      deck, deadDeck, roundEnd, funds, playerHand, pCardPos, displayFont = standButton.update(mX, mY, deck, deadDeck, playerHand, cards, pCardPos, roundEnd, displayFont, cardSprite, funds, bet)
-       # exit
-      deck, deadDeck, roundEnd, funds, handOfPlayer, pCardPos, displayFont = exitButton.update(mX, mY, deck, deadDeck, playerHand, dealerHand, cards, pCardPos,roundEnd, cardSprite, funds, bet, displayFont)
-      # rebuy 
-      funds, click, bet = rebuyButton.update(mX, mY, roundEnd, funds, click, bet)
-      # double
-      deck, deadDeck, roundEnd, funds, playerHand, pCardPos, displayFont, bet = doubleButton.update( mX, mY, deck, deadDeck, playerHand, dealerHand, playerCards, cards, pCardPos, roundEnd, cardSprite, funds, bet, displayFont)
-      # Bet buttons
-      bet, click = bbU.update(mX, mY, bet, funds, click, roundEnd)
-      bet, click = bbD.update(mX, mY, bet, click, roundEnd)
-      # draw them to the screen
-      buttons.draw(screen)
+    # If there are cards on the screen, draw them
+    if len(cards) != 0:
+        playerCards.update()
+        playerCards.draw(screen)
+        cards.update()
+        cards.draw(screen)
 
-      # If there are cards on the screen, draw them
-      if len(cards) != 0:
-          playerCards.update()
-          playerCards.draw(screen)
-          cards.update()
-          cards.draw(screen)
-
-      # Updates the contents of the display
-      pygame.display.flip()
-          ###### MAIN GAME LOOP ENDS ######
+    # Updates the contents of the display
+    pygame.display.flip()
+        ###### MAIN GAME LOOP ENDS ######
       
       
       ###### MAIN GAME FUNCTION ENDS ######
