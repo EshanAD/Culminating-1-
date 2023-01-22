@@ -22,7 +22,7 @@ def Rules():
     # draw the image on the screen at position (0,0)
     SCREEN.blit(RULES_IMAGE, (0, 0))
     # Create a button object called "RULES_BACK" with the text "BACK"
-    RULES_BACK = Button(image=None, pos=(200, 65), text_input="BACK", font=get_font(40), base_color="RED", hovering_color="Green")
+    RULES_BACK = Button(image=None, pos=(950, 65), text_input="BACK", font=get_font(40), base_color="RED", hovering_color="Green")
     # change the color of the button depending on the current position of the mouse
     RULES_BACK.changeColor(RULES_MOUSE_POS)
     # update the screen with the button object

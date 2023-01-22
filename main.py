@@ -74,8 +74,8 @@ def main_login():
       cursor = conn.cursor()
       # Check if the data is present in the table
       cursor.execute('''
-        SELECT * FROM users
-        WHERE username = ? AND password = ?
+      SELECT * FROM users
+      WHERE username = ? AND password = ?
       ''', (username, password))
   
       # Fetch the results of the query
@@ -99,7 +99,7 @@ def main_login():
   
   # Define the Create_Account function
   def Create_Account():
-      # Get the data from the form
+    # Get the data from the form
     username = username_entry.get()
     password = password_entry.get()
     conn = sqlite3.connect("database.db")
@@ -110,9 +110,9 @@ def main_login():
     else:
       # Check if the data is already present in the table
       cursor.execute('''
-          SELECT * FROM users
-          WHERE username = ? AND password = ?
-      ''', (username, password))
+      SELECT * FROM users
+      WHERE username = ? AND password = ?
+    ''', (username, password))
   
       # Fetch the results of the query
       results = cursor.fetchone()
@@ -128,9 +128,9 @@ def main_login():
         cursor = conn.cursor()
         # Insert the data into the table
         cursor.execute('''
-            INSERT INTO users (username, password)
-            VALUES (?, ?)
-          ''', (username, password))
+        INSERT INTO users (username, password)
+        VALUES (?, ?)
+      ''', (username, password))
   
           # Commit the transaction
         conn.commit()

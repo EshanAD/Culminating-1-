@@ -20,12 +20,12 @@ def get_funds(username, password):
     return None
 
 def update_funds(funds, username, password):
-                # Update the database with the new funds value
-                conn = sqlite3.connect("database.db")
-                cursor = conn.cursor()
-                cursor.execute('''
-                    UPDATE users
-                    SET funds = ?
-                    WHERE username = ? AND password = ?
-                    ''', (funds, username, password))
-                conn.commit()
+  # Update the database with the new funds value
+  conn = sqlite3.connect("database.db")
+  cursor = conn.cursor()
+  cursor.execute('''
+      UPDATE users
+      SET funds = ?
+      WHERE username = ? AND password = ?
+      ''', (funds, username, password))
+  conn.commit()
