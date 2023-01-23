@@ -2,6 +2,7 @@
 #Date: January 20 2023
 #Program name: BlackJack with database and GUI
 #Purpose: Creating a fun inovative game that incorporates a database component as well as GUI.
+
 import sqlite3
 from tkinter import *
 import tkinter as tk
@@ -61,6 +62,7 @@ def mainLogin():
       funds REAL DEFAULT 100.0
   );
   ''')
+  #Logs a user in if their account is present in the database or if no boxes left empty. Otherwise error message is created 
   def loginAccount():
     # Get the data from the form
     username = usernameEntry.get()
@@ -94,52 +96,52 @@ def mainLogin():
         # Clear the entry boxes
         usernameEntry.delete(0, END)
         passwordEntry.delete(0, END)
-
-  # Define the Create Account function
+  #Adds a user to the database if no boxes left entry, password contains at least 4 characters and data is not already present in the table. Otherwise error message is created 
   def createAccount():
     # Get the data from the form
     username = usernameEntry.get()
     password = passwordEntry.get()
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
+    if len(password) < 4 or len(password) > 20:
+      messagebox.showerror("Error", "Password must be between 4 and 20 characters long")
+      return
     if not username or not password:
       # One or both of the entry widgets are empty
       messagebox.showerror("Error", "Username and password cannot be empty")
     else:
-      # Check if the data is already present in the table
-      cursor.execute('''
-          SELECT * FROM users
-          WHERE username = ? AND password = ?
-      ''', (username, password))
-  
-      # Fetch the results of the query
-      results = cursor.fetchone()
-  
-      if results:
-        # Data is already present in the table
-        messagebox.showerror("Error","Data is already present in the table, You will be logged in and redirected now")
-        mainDatabase.destroy()
-        funds = database.getFunds(username, password)
-        bj.mainGame(funds, username, password)
-      else:
-        conn = sqlite3.connect("database.db")
-        cursor = conn.cursor()
-        # Insert the data into the table
+        # Check if the data is already present in the table
         cursor.execute('''
-            INSERT INTO users (username, password)
-            VALUES (?, ?)
+        SELECT * FROM users
+        WHERE username = ? AND password = ?
+        ''', (username, password))
+
+        # Fetch the results of the query
+        results = cursor.fetchone()
+
+        if results:
+          # Data is already present in the table
+          messagebox.showerror("Error","Data is already present in the table, You will be logged in and redirected now")
+          mainDatabase.destroy()
+          funds = database.getFunds(username, password)
+          bj.mainGame(funds, username, password)
+        else:
+          conn = sqlite3.connect("database.db")
+          cursor = conn.cursor()
+          # Insert the data into the table
+          cursor.execute('''
+          INSERT INTO users (username, password)
+          VALUES (?, ?)
           ''', (username, password))
-  
           # Commit the transaction
-        conn.commit()
-  
-        # Show a success message
-        messagebox.showinfo("", "Added succesfully!. Now log in through the log in button")
-  
-        #Clear the entry boxes
-        usernameEntry.delete(0, END)
-        passwordEntry.delete(0, END)
-  
+          conn.commit()
+          # Show a success message
+          messagebox.showinfo("", "Added succesfully!. Now log in through the log in button")
+
+          #Clear the entry boxes
+          usernameEntry.delete(0, END)
+          passwordEntry.delete(0, END)
+  #Removes an account from the database if creditionals in database and no boxes left empty. Otherwise error message is created 
   def removeAccount():
     # Get the username and password from the entry widgets
     username = usernameEntry.get()
