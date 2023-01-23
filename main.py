@@ -14,38 +14,38 @@ import Menu as m
 import database 
 
 # Creating main window function
-def main_login():
+def mainLogin():
   # Creates the main window
-  main_database = tk.Tk()
-  main_database.title("BlackJack Login")
-  main_database.geometry("1280x720")
+  mainDatabase = tk.Tk()
+  mainDatabase.title("BlackJack Login")
+  mainDatabase.geometry("1280x720")
 
   # Load the image file
   image = tk.PhotoImage(file="login.png")
 
   # Create a label with the image as the background
-  label = tk.Label(main_database, image=image)
+  label = tk.Label(mainDatabase, image=image)
   label.pack()
 
   # Add a label on top of the image
-  window_name = tk.Label(main_database, text="BlackJack Login",bg = '#800080', font=('times new roman', 40, 'bold'))
-  window_name.place(x=650, y=50)
+  windowName = tk.Label(mainDatabase, text="BlackJack Login",bg = '#800080', font=('times new roman', 40, 'bold'))
+  windowName.place(x=650, y=50)
 
   # Create a frame with specific background color
-  data_frame = Frame(main_database, bg='#800080')
-  data_frame.place(x=725,y=360, width=335, height=100)
+  dataFrame = Frame(mainDatabase, bg='#800080')
+  dataFrame.place(x=725,y=360, width=335, height=100)
 
   #Label and box for first name
-  username_label = Label(data_frame, bg="#FFFACD", text="Username")
-  username_label.grid(row=0, column=0, padx=15, pady=10)
-  username_entry = Entry(data_frame)
-  username_entry.grid(row=0, column=1, padx=10, pady=10)
+  usernameLabel = Label(dataFrame, bg="#FFFACD", text="Username")
+  usernameLabel.grid(row=0, column=0, padx=15, pady=10)
+  usernameEntry = Entry(dataFrame)
+  usernameEntry.grid(row=0, column=1, padx=10, pady=10)
 
   #Label and box for last name
-  password_label = Label(data_frame, bg="#FFFACD", text="Password")
-  password_label.grid(row=1, column=0, padx=15, pady=10)
-  password_entry = Entry(data_frame)
-  password_entry.grid(row=1, column=1, padx=10, pady=10)
+  passwordLabel = Label(dataFrame, bg="#FFFACD", text="Password")
+  passwordLabel.grid(row=1, column=0, padx=15, pady=10)
+  passwordEntry = Entry(dataFrame)
+  passwordEntry.grid(row=1, column=1, padx=10, pady=10)
 
   # Connecting to the database
   conn = sqlite3.connect('database.db')
@@ -61,10 +61,10 @@ def main_login():
       funds REAL DEFAULT 100.0
   );
   ''')
-  def Login_Account():
+  def loginAccount():
     # Get the data from the form
-    username = username_entry.get()
-    password = password_entry.get()
+    username = usernameEntry.get()
+    password = passwordEntry.get()
   
     if not username or not password:
       # One or both of the entry widgets are empty
@@ -84,22 +84,22 @@ def main_login():
       if results:
         # Data is present in the table
         messagebox.showinfo("","Cridentials in Database you are now logged in")
-        main_database.destroy()
+        mainDatabase.destroy()
         # Get the user's funds from the database
-        funds = database.get_funds(username, password)
+        funds = database.getFunds(username, password)
         bj.mainGame(funds, username, password)
       else:
         # Data is not present in the table
         messagebox.showerror("Error", "Username or Password incorrect. Please try again or create a new account")
         # Clear the entry boxes
-        username_entry.delete(0, END)
-        password_entry.delete(0, END)
+        usernameEntry.delete(0, END)
+        passwordEntry.delete(0, END)
 
-  # Define the Create_Account function
-  def Create_Account():
+  # Define the Create Account function
+  def createAccount():
     # Get the data from the form
-    username = username_entry.get()
-    password = password_entry.get()
+    username = usernameEntry.get()
+    password = passwordEntry.get()
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     if not username or not password:
@@ -118,8 +118,8 @@ def main_login():
       if results:
         # Data is already present in the table
         messagebox.showerror("Error","Data is already present in the table, You will be logged in and redirected now")
-        main_database.destroy()
-        funds = database.get_funds(username, password)
+        mainDatabase.destroy()
+        funds = database.getFunds(username, password)
         bj.mainGame(funds, username, password)
       else:
         conn = sqlite3.connect("database.db")
@@ -137,13 +137,13 @@ def main_login():
         messagebox.showinfo("", "Added succesfully!. Now log in through the log in button")
   
         #Clear the entry boxes
-        username_entry.delete(0, END)
-        password_entry.delete(0, END)
+        usernameEntry.delete(0, END)
+        passwordEntry.delete(0, END)
   
-  def Remove_Account():
+  def removeAccount():
     # Get the username and password from the entry widgets
-    username = username_entry.get()
-    password = password_entry.get()
+    username = usernameEntry.get()
+    password = passwordEntry.get()
     
     # Connect to the database
     conn = sqlite3.connect("database.db")
@@ -175,36 +175,36 @@ def main_login():
         messagebox.showinfo("", "Account deleted")
   
         # Clear the entry boxes
-        username_entry.delete(0, END)
-        password_entry.delete(0, END)
+        usernameEntry.delete(0, END)
+        passwordEntry.delete(0, END)
       
     else:
         # Data is not present in the table
         messagebox.showerror("Error", "Username or Password not correct. Account  not deleted please try again")
   
       # Clear the entry boxes
-        username_entry.delete(0, END)
-        password_entry.delete(0, END)
+        usernameEntry.delete(0, END)
+        passwordEntry.delete(0, END)
       
   # Close the connection
   conn.close()
   
   #Function preformed once users click exit database
-  def Close():
-    main_database.destroy()
-    m.main_menu()
+  def close():
+    mainDatabase.destroy()
+    m.mainMenu()
     
   #Creates the white frame shown on the screen that houses the "add", "remove", "update", and "quit" buttons
-  main_frame = Frame(main_database, bg='#800080')
-  main_frame.place(x=725,y=225, width=335, height=135)
+  mainFrame = Frame(mainDatabase, bg='#800080')
+  mainFrame.place(x=725,y=225, width=335, height=135)
   
   #Creates the individual buttons needed for the program and connects them to a function that carries out the task
-  create_account = Button(main_frame, bg='#FFFACD', text="Create Account", command = Create_Account, font=('times new roman', 7), height=2, width=12, bd=6).place(x=45,y=15)
+  createAccount = Button(mainFrame, bg='#FFFACD', text="Create Account", command = createAccount, font=('times new roman', 7), height=2, width=12, bd=6).place(x=45,y=15)
   
-  login_account = Button(main_frame, bg='#FFFACD', text="Login",font=('times new roman', 7), command=Login_Account, height=2, width=12, bd=6).place(x=170,y=15)
+  loginAccount = Button(mainFrame, bg='#FFFACD', text="Login",font=('times new roman', 7), command=loginAccount, height=2, width=12, bd=6).place(x=170,y=15)
   
-  remove_account1 = Button(main_frame, bg='#FFFACD', text="Remove Account",font=('times new roman', 7), command=Remove_Account, height=2, width=12, bd=6).place(x=45,y=75)
+  removeAccount = Button(mainFrame, bg='#FFFACD', text="Remove Account",font=('times new roman', 7), command=removeAccount, height=2, width=12, bd=6).place(x=45,y=75)
   
-  quit = Button(main_frame, bg='#FFFACD', text="Back to Menu",font=('times new roman', 7), command=Close, height=2, width=12, bd=6).place(x=170,y=75)
+  close = Button(mainFrame, bg='#FFFACD', text="Back to Menu",font=('times new roman', 7), command=close, height=2, width=12, bd=6).place(x=170,y=75)
   # Run the Tkinter event loop
-  main_database.mainloop()
+  mainDatabase.mainloop()
