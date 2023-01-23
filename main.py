@@ -63,6 +63,9 @@ def mainLogin():
   );
   ''')
   #Logs a user in if their account is present in the database or if no boxes left empty. Otherwise error message is created 
+  #function to log user in
+  #Ins:(Username, Password entry)
+  #Outs: (Msg)
   def loginAccount():
     # Get the data from the form
     username = usernameEntry.get()
@@ -97,6 +100,9 @@ def mainLogin():
         usernameEntry.delete(0, END)
         passwordEntry.delete(0, END)
   #Adds a user to the database if no boxes left entry, password contains at least 4 characters and data is not already present in the table. Otherwise error message is created 
+  #function to create user in
+  #Ins:(Username, Password entry)
+  #Outs: (Msg)
   def createAccount():
     # Get the data from the form
     username = usernameEntry.get()
@@ -142,6 +148,9 @@ def mainLogin():
           usernameEntry.delete(0, END)
           passwordEntry.delete(0, END)
   #Removes an account from the database if creditionals in database and no boxes left empty. Otherwise error message is created 
+  #function to remove user
+  #Ins:(Username, Password entry)
+  #Outs: (Msg)
   def removeAccount():
     # Get the username and password from the entry widgets
     username = usernameEntry.get()
