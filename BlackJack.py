@@ -466,7 +466,7 @@ def mainGame(funds, username, password):
       self.position = (1065, 440)
 
     def update(self, mX, mY, deck, deadDeck, playerHand, dealerHand, playerCards, cards, pCardPos, roundEnd, cardSprite, funds, bet, displayFont):
-      """ If the button is clicked and the round is NOT over, let the player stand (take no more cards). """
+      """ If the button is clicked and the round is NOT over, let the player take one more card create a sprite for it then stand (take no more cards). """
 
       if roundEnd == 0 and funds >= bet * 2 and len(playerHand) == 2:
         self.image, self.rect = imageLoad("double.png", 0)
