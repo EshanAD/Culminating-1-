@@ -116,37 +116,37 @@ def mainLogin():
       # One or both of the entry widgets are empty
       messagebox.showerror("Error", "Username and password cannot be empty")
     else:
-        # Check if the data is already present in the table
+      # Check if the data is already present in the table
+      cursor.execute('''
+      SELECT * FROM users
+      WHERE username = ? AND password = ?
+      ''', (username, password))
+
+      # Fetch the results of the query
+      results = cursor.fetchone()
+
+      if results:
+        # Data is already present in the table
+        messagebox.showerror("Error","Data is already present in the table, You will be logged in and redirected now")
+        mainDatabase.destroy()
+        funds = database.getFunds(username, password)
+        bj.mainGame(funds, username, password)
+      else:
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+        # Insert the data into the table
         cursor.execute('''
-        SELECT * FROM users
-        WHERE username = ? AND password = ?
+        INSERT INTO users (username, password)
+        VALUES (?, ?)
         ''', (username, password))
+        # Commit the transaction
+        conn.commit()
+        # Show a success message
+        messagebox.showinfo("", "Added succesfully!. Now log in through the log in button")
 
-        # Fetch the results of the query
-        results = cursor.fetchone()
-
-        if results:
-          # Data is already present in the table
-          messagebox.showerror("Error","Data is already present in the table, You will be logged in and redirected now")
-          mainDatabase.destroy()
-          funds = database.getFunds(username, password)
-          bj.mainGame(funds, username, password)
-        else:
-          conn = sqlite3.connect("database.db")
-          cursor = conn.cursor()
-          # Insert the data into the table
-          cursor.execute('''
-          INSERT INTO users (username, password)
-          VALUES (?, ?)
-          ''', (username, password))
-          # Commit the transaction
-          conn.commit()
-          # Show a success message
-          messagebox.showinfo("", "Added succesfully!. Now log in through the log in button")
-
-          #Clear the entry boxes
-          usernameEntry.delete(0, END)
-          passwordEntry.delete(0, END)
+        #Clear the entry boxes
+        usernameEntry.delete(0, END)
+        passwordEntry.delete(0, END)
   #Removes an account from the database if creditionals in database and no boxes left empty. Otherwise error message is created 
   #function to remove user
   #Ins:(Username, Password entry)
