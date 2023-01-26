@@ -207,35 +207,29 @@ def mainGame(funds, username, password):
     return totalValue
 
   def blackJack(deck, deadDeck, playerHand, dealerHand, funds, bet, cards, cardSprite):
-    """
-    Called when the player or the dealer is determined to have blackjack.
-    Hands are compared to determine the outcome.
-    """
-    # Create font object for displaying text
+    """ Called when the player or the dealer is determined to have blackjack. Hands are compared to determine the outcome. """
+  
     textFont = pygame.font.Font(None, 28)
-
-    # Check the value of the player's hand
+  
     playerValue = checkValue(playerHand)
-    # Check the value of the dealer's hand
     dealerValue = checkValue(dealerHand)
-
-    # If both the player and dealer have blackjack
+    
     if playerValue == 21 and dealerValue == 21:
-      # The opposing player ties the original blackjack getter because he also has blackjack
-      # No money will be lost, and a new hand will be dealt
-      displayFont = display(textFont, "Blackjack! The dealer also has blackjack, so it's a push!")
-      deck, playerHand, dealerHand, deadDeck, funds, roundEnd = endRound(deck, playerHand, dealerHand, deadDeck, funds, 0, bet, cards, cardSprite)
-    # If the player has blackjack and the dealer doesn't
+        # The opposing player ties the original blackjack getter because he also has blackjack
+        # No money will be lost, and a new hand will be dealt
+        displayFont = display(textFont, "Blackjack! The dealer also has blackjack, so it's a push!")
+        deck, playerHand, dealerHand, deadDeck, funds, roundEnd = endRound(deck, playerHand, dealerHand, deadDeck, funds, 0, bet, cards, cardSprite)
+            
     elif playerValue == 21 and dealerValue != 21:
-      # Dealer loses
-      displayFont = display(textFont, "Blackjack! You won $%.2f." % (bet * 1.5))
-      deck, playerHand, dealerHand, deadDeck, funds, roundEnd = endRound(deck, playerHand, dealerHand, deadDeck, funds, bet, 0, cards, cardSprite)
-    # If the dealer has blackjack and the player doesn't
+        # Dealer loses
+        displayFont = display(textFont, "Blackjack! You won $%.2f." %(bet*1.5))
+        deck, playerHand, dealerHand, deadDeck, funds, roundEnd = endRound(deck, playerHand, dealerHand, deadDeck, funds, bet, 0, cards, cardSprite)
+        
     elif dealerValue == 21 and playerValue != 21:
-      # Player loses, money is lost, and new hand will be dealt
-      displayFont = display(textFont, "Dealer has blackjack! You lose $%.2f." % (bet))
-      deck, playerHand, dealerHand, deadDeck, funds, roundEnd = endRound(deck, playerHand, dealerHand, deadDeck, funds, bet, 0, cards, cardSprite)
-
+        # Player loses, money is lost, and new hand will be dealt
+        deck, playerHand, dealerHand, deadDeck, funds, roundEnd = endRound(deck, playerHand, dealerHand, deadDeck, funds, 0, bet, cards, cardSprite)
+        displayFont = display(textFont, "Dealer has blackjack! You lose $%.2f." %(bet))
+    
     return displayFont, playerHand, dealerHand, deadDeck, funds, roundEnd
 
   def bust(deck, playerHand, dealerHand, deadDeck, funds, moneyGained, moneyLost, cards, cardSprite):
@@ -304,7 +298,7 @@ def mainGame(funds, username, password):
     playerValue = checkValue(playerHand)
 
     # Dealer hits until he has 17 or over
-    while 1:
+    while True:
       if dealerValue < 17:
         # dealer hits when he has less than 17, and stands if he has 17 or above
         deck, deadDeck, dealerHand = hit(deck, deadDeck, dealerHand)
@@ -662,7 +656,7 @@ def mainGame(funds, username, password):
   ###### INITILIZATION ENDS ########
 
   ###### MAIN GAME LOOP BEGINS #######
-  while 1:
+  while True:
     screen.blit(background, backgroundRect)
     funds = float(funds)
     if bet > funds:
